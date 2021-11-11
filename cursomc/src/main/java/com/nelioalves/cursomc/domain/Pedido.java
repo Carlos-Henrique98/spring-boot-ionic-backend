@@ -29,7 +29,7 @@ public class Pedido implements Serializable {
 	private Integer id;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@JsonFormat(pattern= "dd/MM/yyyy hh:mm")
+	@JsonFormat(pattern = "dd/MM/yyyy hh:mm")
 	private Date instante;
 
 	@JsonManagedReference
@@ -46,7 +46,7 @@ public class Pedido implements Serializable {
 
 	@OneToMany(mappedBy = "id.pedido")
 	private Set<ItemPedido> itens = new HashSet<>();
-	
+
 	public Pedido() {
 	}
 
@@ -56,6 +56,14 @@ public class Pedido implements Serializable {
 		this.instante = instante;
 		this.cliente = cliente;
 		this.enderecoDeEntrega = enderecoDeEntrega;
+	}
+
+	public double getValorTotal() {
+		double soma = 0.0;
+		for (ItemPedido ip : itens) {
+			soma = soma + ip.getSubTotal();
+		}
+		return soma;
 	}
 
 	public Integer getId() {
@@ -130,7 +138,5 @@ public class Pedido implements Serializable {
 			return false;
 		return true;
 	}
-	
-	
 
 }
